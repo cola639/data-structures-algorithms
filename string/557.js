@@ -8,11 +8,11 @@ var reverseWords = function (s) {
     while (i < length && s.charAt(i) != ' ') {
       i++
     }
-    // arr loop
+    // revert word
     for (let p = start; p < i; p++) {
       ret.push(s.charAt(start + i - 1 - p))
     }
-    // condition loop
+    // space character need to be added
     while (i < length && s.charAt(i) == ' ') {
       i++
       ret.push(' ')
