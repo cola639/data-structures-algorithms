@@ -1,3 +1,6 @@
+/**
+ * 使用对象模拟栈功能
+ */
 function Stack() {
   this._size = 0
   this.values = {}

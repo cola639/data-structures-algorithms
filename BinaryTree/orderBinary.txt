@@ -1,0 +1,16 @@
+1 前中后序遍历
+
+     A
+    / \
+    B  C
+   / \  \
+  D   E  F
+
+前序遍历（Pre-order Traversal）  "根-左-右"
+A -> B -> D -> E -> C -> F
+
+中序遍历（In-order Traversal）   "左-根-右"
+D -> B -> E -> A -> C -> F
+
+后序遍历（Post-order Traversal） "左-右-根"
+D -> E -> B -> F -> C -> A
