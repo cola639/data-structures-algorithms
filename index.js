@@ -1,36 +1,39 @@
-// 先序遍历的第一个元素是树的根节点。
-// 在中序遍历中找到根节点，这会将树分成左子树和右子树。
-// 对左子树和右子树递归执行以上步骤。
+// numCourses = 2
+// prerequisites = [[1,0],[0,1]]
 
-// 输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
-// 输出: [3,9,20,null,null,15,7]
+var canFinish = function (numCourses, prerequisites) {
+  const adjacency = Array.from({ length: numCourses }, () => [])
+  const flags = new Array(numCourses).fill(0)
 
-var buildTree = function (preorder, inorder) {
-  // 用于快速查找中序遍历中根节点的索引
-  let map = new Map()
-  for (let i = 0; i < inorder.length; i++) {
-    map.set(inorder[i], i)
+  // 构建邻接表
+  for (let [cur, pre] of prerequisites) {
+    adjacency[pre].push(cur) //  [[1],[0]]
   }
+  console.log("🚀 >> canFinish >> adjacency:", JSON.stringify(adjacency))
 
-  return arrayToTree(0, preorder.length - 1, 0, inorder.length - 1)
+  // 尝试访问每个节点
+  for (let i = 0; i < numCourses; i++) {
+    if (!dfs(i, adjacency, flags)) return false
+  }
+  return true
 }
 
-function arrayToTree(preStart, preEnd, inStart, inEnd) {
-  if (preStart > preEnd || inStart > inEnd) return null // 递归终止条件
-
-  let rootVal = preorder[preStart] // 先序遍历的第一个元素是根节点
-  let root = new TreeNode(rootVal) // 创建根节点
-  let mid = map.get(rootVal) // 找到根节点在中序遍历中的索引
-  let leftTreeSize = mid - inStart // 计算左子树的大小
-
-  // 递归构造左子树和右子树
-  root.left = arrayToTree(
-    preStart + 1,
-    preStart + leftTreeSize,
-    inStart,
-    mid - 1
-  )
-  root.right = arrayToTree(preStart + leftTreeSize + 1, preEnd, mid + 1, inEnd)
-
-  return root
+// 抽离的 dfs 函数
+function dfs(i, adjacency, flags) {
+  console.log("执行")
+  if (flags[i] === -1) return true // 已经访问过，且无环
+  if (flags[i] === 1) return false // 正在访问中，发现环
+  flags[i] = 1 // 标记为正在访问
+  console.log("flags", flags)
+  for (let j of adjacency[i]) {
+    if (!dfs(j, adjacency, flags)) return false // 深度优先搜索
+  }
+  flags[i] = -1 // 标记为访问结束，无环
+  return true
 }
+
+// prerequisites = [[1, 0], [2, 0], [3, 1], [3, 2]] numCourses = 4
+canFinish(2, [
+  [1, 0],
+  [0, 1],
+])
